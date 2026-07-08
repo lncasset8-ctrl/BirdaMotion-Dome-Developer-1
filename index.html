@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BirdsMotion Dome - Indonesian Rainforest × Digital Innovation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: '#1E4620', // Lebih dalam & premium
+                        emeraldMod: '#10B981',
+                        skyMod: '#34D399', // Disesuaikan ke rumpun emerald tech
+                        offWhite: '#F4F7F5', // Off-white dengan tint hijau alami super soft
+                        gold: '#F59E0B', // Amber gold premium
+                        wood: '#654321',
+                        darkNavy: '#0A120B' // Dark green-navy (Earthy Tech)
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #2C3E2B;
+            background-color: #F4F7F5;
+            overflow-x: hidden;
+        }
+        
+        /* Premium Glassmorphism Layers */
+        .glass-dark {
+            background: rgba(10, 18, 11, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(30, 70, 32, 0.05);
+        }
+        .glass-light-solid {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Bio-Digital Matrix Grid Pattern */
+        .cyber-grid {
+            background-image: linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fly-cycle {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            33% { transform: translateY(-12px) translateX(8px) rotate(1deg); }
+            66% { transform: translateY(4px) translateX(-4px) rotate(-1deg); }
+            100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+        }
+        @keyframes leaf-sway {
+            0%, 100% { transform: rotate(0deg) translateY(0px); }
+            50% { transform: rotate(5deg) translateY(-2px); }
+        }
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.15; }
+            50% { transform: translateY(-15px) rotate(10deg); opacity: 0.4; }
+        }
+        @keyframes grid-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .animate-bird-slow { animation: fly-cycle 8s ease-in-out infinite; }
+        .animate-leaf-sway { animation: leaf-sway 5s ease-in-out infinite; }
+        .animate-float-1 { animation: float-slow 6s ease-in-out infinite; }
+        .animate-float-2 { animation: float-slow 9s ease-in-out infinite 2s; }
+        .animate-glow { animation: grid-glow 4s ease-in-out infinite; }
+
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-ripple:active {
+            transform: scale(0.96);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+        /* ==========================================================================
+           PROFESSIONAL BACKGROUND BLENDING MASK (SMOOTH GRADIENT TRANSITIONS)
+           ========================================================================== */
+        
+        /* Memposisikan section utama agar lapisan kabut transisi berada di posisi yang tepat */
+        #home, #tentang, #fitur, #qrcode, #burung-seri, #cara-kerja {
+            position: relative;
+        }
+
+        /* Membuat lapisan semu (pseudo-elements) untuk menampung gradasi kelembutan visual */
+        #home::after, 
+        #tentang::before, #tentang::after, 
+        #fitur::before, #fitur::after, 
+        #qrcode::before, #qrcode::after,
+        #burung-seri::before, #burung-seri::after,
+        #cara-kerja::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 220px; /* Jangkauan kelembutan gradasi agar peleburan warna sempurna */
+            pointer-events: none; /* KRUSIAL: Klik mouse tembus, tombol/fitur/video Anda 100% aman */
+            z-index: 10;
+        }
+
+        /* 1. Sambungan: HOME (Bawah) menuju TENTANG (Atas) */
+        #home::after {
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, #F4F7F5);
+        }
+        #tentang::before {
+            top: 0;
+            background: linear-gradient(to bottom, #F4F7F5, transparent);
+        }
+
+        /* 2. Sambungan: TENTANG (Bawah) menuju FITUR (Atas) */
+        #tentang::after {
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.65));
+        }
+        #fitur::before {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent);
+        }
+
+        /* 3. Sambungan: FITUR (Bawah) menuju ENSIKLOPEDIA/QR CODE (Atas) */
+        #fitur::after {
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, #0F172A); /* Melebur halus ke warna gelap slate-900 */
+        }
+        #qrcode::before {
+            top: 0;
+            background: linear-gradient(to bottom, #0F172A, transparent);
+        }
+
+        /* 4. Sambungan: ENSIKLOPEDIA/QR CODE (Bawah) menuju ISI BOX (Atas) 
+           Catatan: Bagian isi box berada di bagian bawah qrcode, kita lebur kembali ke warna offWhite */
+        #qrcode::after {
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, #F4F7F5);
+        }
+        #burung-seri::before {
+            top: 0;
+            background: linear-gradient(to bottom, #F4F7F5, transparent);
+        }
+
+        /* 5. Sambungan: ISI BOX / SERI BURUNG (Bawah) menuju CARA KERJA (Atas) */
+        #burung-seri::after {
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, #FFFFFF); /* Menuju latar belakang putih murni */
+        }
+        #cara-kerja::before {
+            top: 0;
+            background: linear-gradient(to bottom, #FFFFFF, transparent);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 left-0 w-full z-50 glass-dark text-white px-6 py-4 border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#home" class="flex items-center gap-2.5 font-poppins font-bold text-xl tracking-wide">
+                <i class="fa-solid fa-feather-pointed text-gold animate-bounce"></i> BirdsMotion <span class="text-gold">Dome</span>
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-medium tracking-wide">
+                <a href="#home" class="hover:text-gold transition-colors text-gold font-semibold">Home</a>
+                <a href="#tentang" class="hover:text-gold transition-colors">Tentang</a>
+                <a href="#fitur" class="hover:text-gold transition-colors">Fitur</a>
+                <a href="#qrcode" class="hover:text-gold transition-colors">Ensiklopedia</a>
+                <a href="#kemasan" class="hover:text-gold transition-colors">Isi Box</a>
+                <a href="#koleksi" class="hover:text-gold transition-colors">Seri Burung</a>
+                <a href="#cara-kerja" class="hover:text-gold transition-colors">Cara Kerja</a>
+            </div>
+            <a href="#koleksi" class="btn-ripple bg-gold text-darkNavy font-bold px-6 py-2.5 rounded-full text-sm shadow-lg hover:bg-amber-500 hover:shadow-gold/20">Jelajahi Seri</a>
+        </div>
+    </nav>
+
+ <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden px-6 bg-cover bg-center bg-no-repeat" style="background-image: url('WhatsApp Image 2026-07-04 at 13.32.33 (1).jpeg');">
+    
+    <div class="absolute top-1/4 left-10 text-white/10 animate-bird-slow text-4xl"><i class="fa-solid fa-crow"></i></div>
+    <div class="absolute top-1/3 right-12 text-white/10 animate-bird-slow text-3xl" style="animation-delay: 2.5s;"><i class="fa-solid fa-crow"></i></div>
+    <div class="absolute bottom-1/4 left-1/4 text-emeraldMod/20 text-2xl animate-float-1 pointer-events-none"><i class="fa-solid fa-leaf"></i></div>
+    <div class="absolute top-1/3 left-1/2 text-gold/15 text-xl animate-float-2 pointer-events-none"><i class="fa-solid fa-leaf"></i></div>
+    <div class="absolute bottom-1/3 right-1/4 text-emeraldMod/15 text-3xl animate-float-1 pointer-events-none"><i class="fa-solid fa-feather"></i></div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div class="space-y-6 text-center lg:text-left">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-xs font-semibold uppercase tracking-widest text-gold border border-gold/30 shadow-lg">
+                <i class="fa-solid fa-tree animate-leaf-sway text-emeraldMod"></i> Burung Endemik Indonesia x Aviantara Developer
+            </span>
+            <h1 class="font-poppins font-extrabold text-4xl sm:text-6xl leading-tight text-white [text-shadow:0_4px_16px_rgba(0,0,0,0.8)]">
+                BirdsMotion <span class="text-gold [text-shadow:0_4px_16px_rgba(245,158,11,0.4)]">Dome</span>
+            </h1>
+            <p class="text-white text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal [text-shadow:0_2px_12px_rgba(0,0,0,0.9)]">
+                Belajar, Bermain, dan Mengenal Kekayaan Burung Indonesia dalam Satu Produk Interaktif Berbasis Seni Kriya dan Teknologi Otomatisasi.
+            </p>
+            
+            <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+                <a href="#tentang" class="btn-ripple bg-emeraldMod hover:bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl flex items-center gap-2 shadow-emeraldMod/20">
+                    Explore Product <i class="fa-solid fa-compass text-xs"></i>
+                </a>
+                <button onclick="openDemoVideoModal()" class="btn-ripple border border-white/60 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-medium px-8 py-3.5 rounded-full flex items-center gap-2 shadow-lg cursor-pointer transition-all">
+                    <i class="fa-solid fa-circle-play text-xs text-gold"></i> Watch Demo
+                </button>
+            </div>
+        </div>
+        
+        <div class="flex justify-center relative">
+            <div class="absolute w-80 h-80 bg-emeraldMod/10 rounded-full filter blur-3xl animate-pulse"></div>
+            <div class="w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-white/95 backdrop-blur-md border border-white/40 relative flex items-center justify-center shadow-2xl animate-bird-slow overflow-hidden">
+                <div class="absolute inset-4 rounded-full border border-dashed border-forest/20 z-10 pointer-events-none"></div>
+                
+                <img src="WhatsApp Image 2026-07-05 at 14.59.29.jpeg" alt="Aviantara Official Logo" class="w-full h-full object-cover scale-[1.02] absolute inset-0">
+                
+                <div class="absolute bottom-8 text-center w-full z-20">
+                    <span class="text-[10px] uppercase tracking-widest text-white font-bold bg-forest/90 px-3 py-1 rounded-full border border-emeraldMod/20 shadow-md">
+                        <i class="fa-solid fa-gear animate-spin text-gold"></i> Kinetic System Active
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="demoVideoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md transition-opacity duration-300">
+    <div class="relative w-full max-w-4xl bg-stone-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        
+        <button onclick="closeDemoVideoModal()" class="absolute top-4 right-4 z-10 text-white/70 hover:text-white bg-black/40 hover:bg-black/60 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+
+        <div class="p-6 sm:p-10 text-center space-y-6">
+            <div class="space-y-2">
+                <span class="text-gold font-semibold tracking-wider text-sm uppercase flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-eye"></i> Live Demonstration
+                </span>
+                <h2 class="font-poppins font-bold text-2xl sm:text-3xl text-white">Saksikan BirdsMotion Dome Beraksi</h2>
+                <p class="text-gray-400 font-light text-sm max-w-md mx-auto">
+                    Mekanisme presisi kepakan sayap burung berbasis kriya kayu yang bergerak secara halus dan interaktif.
+                </p>
+            </div>
+
+            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/5 shadow-inner">
+                <video id="demoVideo" controls class="w-full h-full object-cover">
+                    <source src="demo.mp4" type="video/mp4">
+                    Browser kamu tidak mendukung pemutar video.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDemoVideoModal() {
+        const modal = document.getElementById('demoVideoModal');
+        const video = document.getElementById('demoVideo');
+        
+        if (modal) {
+            modal.classList.remove('hidden');
+            if (video) video.play(); 
+        }
+    }
+
+    // Fungsi sembunyikan modal dan hentikan video
+    function closeDemoVideoModal() {
+        const modal = document.getElementById('demoVideoModal');
+        const video = document.getElementById('demoVideo');
+        
+        if (modal) {
+            modal.classList.add('hidden');
+            if (video) {
+                video.pause();
+                video.currentTime = 0; // Mengulang durasi ke awal
+            }
+        }
+    }
+
+    // Menutup modal jika area background hitam di-klik
+    window.onclick = function(event) {
+        const modal = document.getElementById('demoVideoModal');
+        if (event.target === modal) {
+            closeDemoVideoModal();
+        }
+    }
+</script>
+            
+            <div class="max-w-3xl mx-auto rounded-3xl overflow-hidden glass border border-white/10 shadow-2xl bg-black/40 p-4">
+                <video 
+                    class="w-full h-auto rounded-2xl shadow-inner focus:outline-none" 
+                    controls 
+                    poster="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=1200&q=80"
+                    preload="metadata">
+                    <source src="demo.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutaran video HTML5. Silakan perbarui browser Anda.
+                </video>
+            </div>
+        </div>
+    </section>
+    <section id="tentang" class="py-32 px-6 bg-cover bg-center bg-no-repeat relative flex items-center justify-center overflow-hidden" style="background-image: url('WhatsApp Image 2026-07-05 at 14.27.33.jpeg');">
+        
+        <div class="absolute top-16 right-12 text-forest/10 text-6xl animate-float-1 pointer-events-none z-10"><i class="fa-solid fa-leaf"></i></div>
+        <div class="absolute bottom-16 left-8 text-emeraldMod/10 text-5xl animate-float-2 pointer-events-none z-10"><i class="fa-solid fa-seedling"></i></div>
+
+        <div class="max-w-7xl mx-auto w-full relative z-20">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left bg-white/90 backdrop-blur-md p-8 sm:p-12 rounded-[2rem] border border-white/60 shadow-xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-forest/5 text-forest text-xs font-semibold uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-info text-[10px] animate-pulse"></i> Mengenal Produk
+                    </div>
+                    <h2 class="font-poppins font-extrabold text-3xl sm:text-4xl text-slate-900 leading-tight">
+                        Gabungan Sempurna <span class="bg-gradient-to-r from-forest to-emeraldMod bg-clip-text text-transparent">Edukasi, Kreativitas, & Teknologi</span>
+                    </h2>
+                    <p class="text-slate-700 text-base sm:text-lg leading-relaxed font-normal">
+                        <strong class="text-forest font-bold">BirdsMotion Dome</strong> hadir sebagai media pembelajaran interaktif revolusioner generasi baru. Melalui perakitan fisik mandiri, pewarnaan kriya artistik, serta integrasi modul mekanik elektrik, produk ini dirancang khusus untuk memperkenalkan keanekaragaman hayati spesies burung endemik Indonesia secara nyata dan menyenangkan.
+                    </p>
+                    <div class="pt-2 flex justify-center lg:justify-start">
+                        <a href="#fitur" class="text-sm font-bold text-forest hover:text-emeraldMod flex items-center gap-2 group transition-colors">
+                            Lihat Fitur BirdsMotion <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full pt-6 lg:pt-0">
+                    
+                    <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 shadow-sm flex flex-col justify-between group hover:bg-white hover:border-forest/30 hover:-translate-y-1.5 transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-forest/5 flex items-center justify-center text-forest text-xl mb-5 group-hover:bg-forest group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-poppins font-bold text-slate-800 text-base mb-1 group-hover:text-forest transition-colors">100% Edukatif</h4>
+                            <p class="text-xs text-slate-600 font-normal leading-relaxed">Sains ornitologi dikemas interaktif untuk segala usia.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 shadow-sm flex flex-col justify-between group hover:bg-white hover:border-emeraldMod/30 hover:-translate-y-1.5 transition-all duration-300 lg:translate-y-6">
+                        <div class="w-12 h-12 rounded-xl bg-emeraldMod/5 flex items-center justify-center text-emeraldMod text-xl mb-5 group-hover:bg-emeraldMod group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-poppins font-bold text-slate-800 text-base mb-1 group-hover:text-emeraldMod transition-colors">Eco-Material</h4>
+                            <p class="text-xs text-slate-600 font-normal leading-relaxed">Menggunakan material kayu pilihan yang ramah lingkungan.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 shadow-sm flex flex-col justify-between group hover:bg-white hover:border-emeraldMod/30 hover:-translate-y-1.5 transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-emeraldMod/5 flex items-center justify-center text-emeraldMod text-xl mb-5 group-hover:bg-emeraldMod group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-poppins font-bold text-slate-800 text-base mb-1 group-hover:text-emeraldMod transition-colors">Kinetic Tech</h4>
+                            <p class="text-xs text-slate-600 font-normal leading-relaxed">Simulasi mekanik kepakan sayap burung yang presisi.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/60 shadow-sm flex flex-col justify-between group hover:bg-white hover:border-gold/30 hover:-translate-y-1.5 transition-all duration-300 lg:translate-y-6">
+                        <div class="w-12 h-12 rounded-xl bg-gold/5 flex items-center justify-center text-amber-600 text-xl mb-5 group-hover:bg-gold group-hover:text-darkNavy transition-all duration-300">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-poppins font-bold text-slate-800 text-base mb-1 group-hover:text-amber-600 transition-colors">Cloud Integration</h4>
+                            <p class="text-xs text-slate-600 font-normal leading-relaxed">Terhubung langsung ke ensiklopedia awan digital.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+ <section id="fitur" class="py-28 px-6 relative overflow-hidden text-white bg-cover bg-center bg-no-repeat" style="background-image: url('WhatsApp Image 2026-07-05 at 21.17.06.jpeg');">
+    <div class="absolute inset-0 bg-black/60 pointer-events-none z-0"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-20 space-y-3">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-20 space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 text-slate-200 text-xs font-semibold uppercase tracking-widest border border-white/10 backdrop-blur-sm">
+                    <i class="fa-solid fa-cubes text-[10px] text-emeraldMod"></i> Ecosystem Capabilities
+                </div>
+                <h2 class="font-poppins font-extrabold text-3xl sm:text-4xl text-white leading-tight [text-shadow:0_4px_12px_rgba(0,0,0,0.5)]">
+                    Fitur Eksklusif <span class="bg-gradient-to-r from-emeraldMod to-gold bg-clip-text text-transparent">BirdsMotion</span>
+                </h2>
+                <p class="text-slate-200 font-light text-base max-w-xl mx-auto leading-relaxed [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
+                    Sinergi komprehensif yang menjembatani aktivitas motorik fisik kriya dengan eksplorasi data digital cerdas.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div onclick="gantiPreviewFitur('kinetic')" class="cursor-pointer bg-gradient-to-br from-forest/50 via-neutral-900/80 to-black backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-md opacity-80 hover:opacity-100 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden hover:border-emeraldMod/30" id="btn-kinetic">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/5">
+                            <i class="fa-solid fa-charging-station text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-slate-100 group-hover:text-emeraldMod transition-colors">Gerak Otomatis Kinetic</h3>
+                        <p class="text-slate-300 text-xs font-light leading-relaxed group-hover:text-slate-200 transition-colors">Digerakkan oleh modul motor dinamo listrik mikro responsif untuk mensimulasikan gerak kepakan sayap burung secara konsisten.</p>
+                    </div>
+
+                    <div onclick="gantiPreviewFitur('manual')" class="cursor-pointer bg-gradient-to-br from-forest/50 via-neutral-900/80 to-black backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-md opacity-80 hover:opacity-100 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden hover:border-emeraldMod/30" id="btn-manual">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/5">
+                            <i class="fa-solid fa-toggle-off text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-slate-100 group-hover:text-emeraldMod transition-colors">Gerak Tuas Manual</h3>
+                        <p class="text-slate-300 text-xs font-light leading-relaxed group-hover:text-slate-200 transition-colors">Dilengkapi dengan kendali tuas mekanis interaktif untuk mempelajari prinsip dasar kinematika engsel secara langsung dan nyata.</p>
+                    </div>
+
+                    <div onclick="gantiPreviewFitur('coloring')" class="cursor-pointer bg-gradient-to-br from-forest/50 via-neutral-900/80 to-black backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-md opacity-80 hover:opacity-100 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden hover:border-emeraldMod/30" id="btn-coloring">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/5">
+                            <i class="fa-solid fa-palette text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-slate-100 group-hover:text-emeraldMod transition-colors">DIY Coloring (Kriya)</h3>
+                        <p class="text-slate-300 text-xs font-light leading-relaxed group-hover:text-slate-200 transition-colors">Ekspresikan nilai estetika seni dengan melukis corak bulu replika tubuh burung memakai set cat akrilik pilihan Anda.</p>
+                    </div>
+
+                    <div onclick="gantiPreviewFitur('puzzle')" class="cursor-pointer bg-gradient-to-br from-forest/75 via-neutral-900/90 to-black backdrop-blur-md p-6 rounded-2xl border border-emeraldMod shadow-xl opacity-100 shadow-emeraldMod/15 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden" id="btn-puzzle">
+                        <div class="absolute top-0 right-0 bg-emeraldMod text-white text-[8px] font-bold px-2 py-0.5 rounded-bl-xl uppercase tracking-wider">
+                            Best Activity
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-white/10 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/10">
+                            <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-emeraldMod group-hover:text-white transition-colors">DIY Puzzle Assembly</h3>
+                        <p class="text-slate-200 text-xs font-normal leading-relaxed group-hover:text-white transition-colors">Asah kemampuan konstruksi spasial dengan merakit potongan kayu presisi hasil pemotongan laser (*laser-cut*) menjadi utuh.</p>
+                    </div>
+
+                    <div onclick="gantiPreviewFitur('packaging')" class="cursor-pointer bg-gradient-to-br from-forest/50 via-neutral-900/80 to-black backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-md opacity-80 hover:opacity-100 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden hover:border-emeraldMod/30" id="btn-packaging">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/5">
+                            <i class="fa-solid fa-box-open text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-slate-100 group-hover:text-emeraldMod transition-colors">Premium Box Packaging</h3>
+                        <p class="text-slate-300 text-xs font-light leading-relaxed group-hover:text-slate-200 transition-colors">Dikemas eksklusif dengan kotak tematik ramah lingkungan bermotif etnik nusantara, bernilai estetika tinggi, dan sangat ideal sebagai pajangan.</p>
+                    </div>
+
+                    <div onclick="gantiPreviewFitur('qrcode')" class="cursor-pointer bg-gradient-to-br from-forest/50 via-neutral-900/80 to-black backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-md opacity-80 hover:opacity-100 transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden hover:border-emeraldMod/30" id="btn-qrcode">
+                        <div class="absolute top-0 right-0 bg-emeraldMod text-white text-[8px] font-bold px-2 py-0.5 rounded-bl-xl uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+                            Digital Integration
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-white/5 text-emeraldMod mb-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-forest group-hover:to-emeraldMod group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm border border-white/5">
+                            <i class="fa-solid fa-qrcode text-lg"></i>
+                        </div>
+                        <h3 class="font-poppins font-bold text-base mb-2 text-slate-100 group-hover:text-emeraldMod transition-colors">QR Smart Encyclopedia</h3>
+                        <p class="text-slate-300 text-xs font-light leading-relaxed group-hover:text-slate-200 transition-colors">Akses instan sekali ketuk menuju platform ensiklopedia ilmiah berbasis komputasi awan untuk pendalaman data ornitologi.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 w-full lg:sticky lg:top-28">
+                    <div class="bg-black/60 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-xl flex flex-col gap-4">
+                        <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-950 relative shadow-inner border border-white/5">
+                            <img id="img-kinetic" src="WhatsApp Image 2026-07-05 at 17.22.18.jpeg" alt="Gerak Otomatis Kinetic" class="hidden w-full h-full object-cover transition-all duration-500 opacity-0">
+                            
+                            <img id="img-manual" src="WhatsApp Image 2026-07-05 at 17.22.18 (1).jpeg" alt="Gerak Tuas Manual" class="hidden w-full h-full object-cover transition-all duration-500 opacity-0">
+                            
+                            <img id="img-coloring" src="WhatsApp Image 2026-07-05 at 16.05.54.jpeg" alt="DIY Coloring" class="hidden w-full h-full object-cover transition-all duration-500 opacity-0">
+                            
+                            <img id="img-puzzle" src="WhatsApp Image 2026-07-05 at 16.27.32.jpeg" alt="DIY Puzzle" class="w-full h-full object-cover transition-all duration-500 opacity-100">
+                            
+                            <img id="img-packaging" src="WhatsApp Image 2026-07-05 at 17.22.18 (2).jpeg" alt="Premium Box Packaging" class="hidden w-full h-full object-cover transition-all duration-500 opacity-0">
+                            
+                            <img id="img-qrcode" src="WhatsApp Image 2026-07-05 at 18.57.25.jpeg" alt="QR Smart Encyclopedia" class="hidden w-full h-full object-cover transition-all duration-500 opacity-0">
+                        </div>
+                        
+                        <div class="bg-black/40 border border-white/5 p-3 rounded-xl text-center">
+                            <p class="text-xs font-semibold text-slate-300" id="preview-caption">Menampilkan: Komponen Kayu dan Detail Puzzle Assembly</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            function gantiPreviewFitur(fitur) {
+                const listFitur = ['kinetic', 'manual', 'coloring', 'puzzle', 'packaging', 'qrcode'];
+                
+                const captions = {
+                    kinetic: "Menampilkan: Komponen Dinamo Listrik Mikro & Modul Gerak Otomatis Kinetic",
+                    manual: "Menampilkan: Sistem Mekanis Tuas Engsel & Kendali Manual",
+                    coloring: "Menampilkan: Peralatan DIY Coloring & Pewarnaan Kriya",
+                    puzzle: "Menampilkan: Komponen Kayu dan Detail Puzzle Assembly",
+                    packaging: "Menampilkan: Premium Box Packaging Eksklusif Ramah Lingkungan",
+                    qrcode: "Menampilkan: Akses Kartu Integrasi QR Smart Encyclopedia"
+                };
+
+                listFitur.forEach(item => {
+                    const img = document.getElementById(`img-${item}`);
+                    const btn = document.getElementById(`btn-${item}`);
+                    
+                    if (item === fitur) {
+                        img.classList.remove('hidden', 'opacity-0');
+                        img.classList.add('opacity-100');
+                        btn.classList.add('border-emeraldMod', 'opacity-100', 'shadow-[0_0_20px_rgba(16,185,129,0.15)]');
+                        btn.classList.remove('border-transparent', 'opacity-80');
+                    } else {
+                        img.classList.add('hidden', 'opacity-0');
+                        img.classList.remove('opacity-100');
+                        btn.classList.remove('border-emeraldMod', 'opacity-100', 'shadow-[0_0_20px_rgba(16,185,129,0.15)]');
+                        btn.classList.add('border-transparent', 'opacity-80');
+                    }
+                });
+            }
+        </script>
+    </div>
+  </section>
+
+    <section id="qrcode" class="py-24 px-6 bg-slate-900 text-white relative overflow-hidden bg-center bg-no-repeat" style="background-image: url('WhatsApp Image 2026-07-07 at 21.06.02.jpeg');">
+        <div class="absolute top-1/4 -left-24 w-96 h-96 bg-emeraldMod/5 rounded-full filter blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-1/4 -right-24 w-96 h-96 bg-gold/5 rounded-full filter blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center lg:text-left mb-16 space-y-3">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emeraldMod/10 text-emeraldMod text-xs font-semibold uppercase tracking-widest border border-emeraldMod/20">
+                    <i class="fa-solid fa-database animate-pulse"></i> Cloud Connected Server v2.5
+                </span>
+                <h2 class="font-poppins font-extrabold text-3xl sm:text-5xl tracking-tight text-white">
+                    Ensiklopedia Pintar <span class="text-gold [text-shadow:0_0_20px_rgba(245,158,11,0.15)]">Seri 01</span>
+                </h2>
+                <div class="font-poppins font-bold text-xl sm:text-3xl text-emeraldMod tracking-wide flex items-center justify-center lg:justify-start gap-2.5 pt-0.5">
+                    <i class="fa-solid fa-feather text-lg text-gold animate-bounce"></i> Masterpiece: Burung Cendet Madura
+                </div>
+                <p class="text-slate-400 font-light max-w-2xl text-sm sm:text-base pt-1">
+                    Pusat dokumentasi taksonomi dan kompilasi data ornitologi komprehensif, disinkronisasikan secara dinamis dengan inovasi teknologi kriya kinetik BirdsMotion Dome.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                
+                <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+                   <div class="bg-neutral-950 p-6 rounded-2xl border border-neutral-800 shadow-2xl flex flex-col justify-between h-full">
+                        <div class="space-y-5">
+                            <div class="relative rounded-xl overflow-hidden h-64 bg-slate-950 border border-white/10 flex items-center justify-center group shadow-inner">
+                                <div class="absolute top-4 left-4 z-20">
+                                    <span class="bg-forest text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md border border-white/5">
+                                        Endemic Species
+                                    </span>
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10"></div>
+                                
+                                <img id="cendet-main" src="WhatsApp Image 2026-07-05 at 20.57.34.jpeg" alt="Cendet Madura Utama" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105">
+                                
+                                <div class="absolute bottom-4 left-4 z-10">
+                                    <h4 id="cendet-title" class="font-poppins font-extrabold text-xl text-white tracking-wide">Cendet Madura Asli</h4>
+                                    <p id="cendet-sub" class="text-xs italic text-gold font-light">Lanius schach longicaudatus</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3">
+                                <div onclick="switchCendetView('main', 'WhatsApp Image 2026-07-05 at 20.57.34.jpeg', 'Cendet Madura Asli', 'Lanius schach longicaudatus')" class="cursor-pointer aspect-video rounded-xl overflow-hidden border-2 border-emeraldMod shadow-md transition-all opacity-100 transform hover:scale-105 bg-slate-950" id="thumb-main">
+                                    <img src="WhatsApp Image 2026-07-05 at 20.57.34.jpeg" class="w-full h-full object-cover" alt="Thumb Cendet Asli">
+                                </div>
+                                <div onclick="switchCendetView('habitat', 'WhatsApp Image 2026-07-05 at 21.17.06.jpeg', 'Habitat Alami Sabana', 'Wilayah Teritorial Terbuka Madura')" class="cursor-pointer aspect-video rounded-xl overflow-hidden border-2 border-transparent shadow-md transition-all opacity-60 hover:opacity-100 transform hover:scale-105 bg-slate-950" id="thumb-habitat">
+                                    <img src="WhatsApp Image 2026-07-05 at 21.17.06.jpeg" class="w-full h-full object-cover" alt="Thumb Habitat">
+                                </div>
+                                <div onclick="switchCendetView('puzzle', 'WhatsApp Image 2026-07-05 at 21.42.18.jpeg', 'Telur Burung Cendet', 'Fase Awal Siklus Hidup')" class="cursor-pointer aspect-video rounded-xl overflow-hidden border-2 border-transparent shadow-md transition-all opacity-60 hover:opacity-100 transform hover:scale-105 bg-slate-950" id="thumb-puzzle">
+                                    <img src="WhatsApp Image 2026-07-05 at 21.42.18.jpeg" class="w-full h-full object-cover" alt="Thumb Telur Burung">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 space-y-4 bg-black/30 p-4 rounded-xl border border-white/5">
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] uppercase tracking-widest text-gold font-semibold block px-1">
+                                    <i class="fa-solid fa-video text-xs"></i> Dokumentasi Cendet Madura
+                                </label>
+                                <div class="w-full aspect-video rounded-lg overflow-hidden bg-slate-950 border border-white/10 shadow-md">
+                                    <video class="w-full h-full object-cover" controls preload="metadata">
+                                        <source src="WhatsApp Video 2026-07-07 at 20.12.31.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+
+                            <button onclick="toggleAudio()" id="btn-audio-control" class="btn-ripple w-full bg-gold text-darkNavy font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-poppins shadow-lg">
+                                <i id="icon-audio" class="fa-solid fa-play text-sm"></i> <span id="text-audio">Putar Suara Burung</span>
+                            </button>
+                            <audio id="bird-call" src="WhatsApp Audio 2026-07-07 at 20.04.32.mpeg" onended="audioSelesai()"></audio>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-6 flex flex-col justify-between">
+                    <div class="bg-white/5 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl space-y-6 h-full flex flex-col justify-between">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto no-scrollbar max-h-[500px] pr-2">
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-gold/20 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-gold flex items-center gap-2">
+                                    <i class="fa-solid fa-landmark text-xs"></i> 1. Sejarah & Filosofi Madura
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Secara historis, Cendet (Pentet) berkepala hitam (*blangkon*) asal Pulau Madura diakui para bangsawan lokal sebagai lambang ketegasan, kasta tertinggi kicau, dan simbol petarung sejati berkat kekuatan mentalnya yang tak kenal takut saat berhadapan dengan lawan.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-emeraldMod/20 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-emeraldMod flex items-center gap-2">
+                                    <i class="fa-solid fa-mountain-sun text-xs"></i> 2. Lingkungan & Habitat Asli
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Mereka hidup subur di area terbuka, lahan pertanian, pinggiran hutan sekunder, dan wilayah pesisir Pulau Madura. Sangat menyukai puncak pohon kering atau kabel tiang listrik tinggi sebagai menara pengawas teritorial untuk memantau pergerakan mangsa.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-emeraldMod/20 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-emeraldMod flex items-center gap-2">
+                                    <i class="fa-solid fa-shrimp text-xs"></i> 3. Pola Makan (Predator)
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Terkenal dengan julukan burung jagal (*Butcherbird*). Makanan utamanya adalah serangga besar (jangkrik, belalang), kadal kecil, katak, bahkan mamalia kecil. Mereka memiliki insting unik menyimpan cadangan makanan dengan menusukkannya pada duri tanaman.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-pink-500/20 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-pink-400 flex items-center gap-2">
+                                    <i class="fa-solid fa-egg text-xs"></i> 4. Cara Berkembang Biak
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Bersifat monogami ketat. Musim kawin ditandai dengan tarian kepakan sayap dari pejantan. Sarang berbentuk cawan kokoh dibangun bersama dari serat tanaman dan ranting di dahan pohon rindang. Betina biasanya mengerami 2-4 butir telur bercak abu-abu.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-forest/40 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-emeraldMod flex items-center gap-2">
+                                    <i class="fa-solid fa-dna text-xs"></i> 5. Data Ornitologi & Taksonomi
+                                </h3>
+                                <div class="text-[11px] text-slate-300 space-y-1 font-light">
+                                    <div class="flex justify-between border-b border-white/5 pb-1"><span>Kerajaan:</span><span class="text-white font-medium">Animalia</span></div>
+                                    <div class="flex justify-between border-b border-white/5 pb-1"><span>Kelas / Ordo:</span><span class="text-white font-medium">Aves / Passeriformes</span></div>
+                                    <div class="flex justify-between border-b border-white/5 pb-1"><span>Famili / Genus:</span><span class="text-white font-medium">Laniidae / Lanius</span></div>
+                                    <div class="flex justify-between"><span>Spesies / Subspesies:</span><span class="text-gold italic font-medium">L. schach longicaudatus</span></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-gold/40 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-gold flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-heart text-xs"></i> 6. Status Conservasi
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Berdasarkan data IUCN Red List, secara global dikategorikan sebagai *Least Concern (LC)*. Namun, populasi spesifik ras murni Madura di alam liar mengalami tren penurunan, sehingga memerlukan pengawasan ketat dari komunitas lokal.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-amber-500/30 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-amber-500 flex items-center gap-2">
+                                    <i class="fa-solid fa-triangle-exclamation text-xs"></i> 7. Ancaman & Krisis Populasi
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Penyebab utama penyusutan populasi adalah perburuan liar masif untuk pasar burung kicau, alih fungsi lahan sabana menjadi pemukiman, serta penggunaan pestisida kimia berlebih di pertanian yang membunuh serangga sebagai rantai makanan utama mereka.
+                                </p>
+                            </div>
+
+                            <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5 hover:border-emeraldMod/40 transition-all">
+                                <h3 class="font-poppins font-bold text-base text-emeraldMod flex items-center gap-2">
+                                    <i class="fa-solid fa-seedling text-xs"></i> 8. Strategi Pelestarian Alam
+                                </h3>
+                                <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                    Upaya penyelamatan berfokus pada galakan penangkaran lokal (*captive breeding*) berbasis ring resmi, perlindungan area vegetasi tinggi di Madura, serta edukasi pehobi untuk beralih dari burung hasil tangkapan alam ke burung hasil budidaya lestari.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10 grid grid-cols-3 gap-2 text-center text-[11px] font-medium font-poppins">
+                            <div class="bg-black/30 py-2.5 px-1 rounded-xl text-gold border border-white/5"><i class="fa-solid fa-mask"></i> Karakteristik Masker Blangkon</div>
+                            <div class="bg-black/30 py-2.5 px-1 rounded-xl text-emeraldMod border border-white/5"><i class="fa-solid fa-gauge-high"></i> Vokalisasi Mimikri Superior</div>
+                            <div class="bg-black/30 py-2.5 px-1 rounded-xl text-emeraldMod border border-white/5"><i class="fa-solid fa-shield-halved"></i> Konservasi Risiko Rendah</div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function switchCendetView(viewKey, imgSrc, titleText, subText) {
+                const mainImg = document.getElementById('cendet-main');
+                const mainTitle = document.getElementById('cendet-title');
+                const mainSub = document.getElementById('cendet-sub');
+                
+                mainImg.style.opacity = '0.3';
+                
+                setTimeout(() => {
+                    mainImg.src = imgSrc;
+                    mainTitle.innerText = titleText;
+                    mainSub.innerText = subText;
+                    mainImg.style.opacity = '1';
+                }, 150);
+
+                const keys = ['main', 'habitat', 'puzzle'];
+                keys.forEach(k => {
+                    const thumb = document.getElementById(`thumb-${k}`);
+                    if (k === viewKey) {
+                        thumb.classList.add('border-emeraldMod', 'opacity-100');
+                        thumb.classList.remove('border-transparent', 'opacity-60');
+                    } else {
+                        thumb.classList.remove('border-emeraldMod', 'opacity-100');
+                        thumb.classList.add('border-transparent', 'opacity-60');
+                    }
+                });
+            }
+
+            function toggleAudio() {
+                const audio = document.getElementById('bird-call');
+                const btnText = document.getElementById('text-audio');
+                const btnIcon = document.getElementById('icon-audio');
+                const btn = document.getElementById('btn-audio-control');
+
+                if (audio.paused) {
+                    audio.play();
+                    btnText.innerText = "Jeda Suara Burung";
+                    btnIcon.className = "fa-solid fa-pause text-sm";
+                    btn.classList.remove('bg-gold', 'text-darkNavy');
+                    btn.classList.add('bg-emeraldMod', 'text-white', 'shadow-emeraldMod/10');
+                } else {
+                    audio.pause();
+                    resetTombolAudio();
+                }
+            }
+
+            function audioSelesai() {
+                resetTombolAudio();
+            }
+
+            function resetTombolAudio() {
+                const btnText = document.getElementById('text-audio');
+                const btnIcon = document.getElementById('icon-audio');
+                const btn = document.getElementById('btn-audio-control');
+                
+                btnText.innerText = "Putar Suara Burung";
+                btnIcon.className = "fa-solid fa-play text-sm";
+                btn.classList.remove('bg-emeraldMod', 'text-white', 'shadow-emeraldMod/10');
+                btn.classList.add('bg-gold', 'text-darkNavy');
+            }
+        </script>
+    </section>
+<section id="kemasan" class="py-28 px-6 text-neutral-200 relative overflow-hidden bg-cover bg-center bg-no-repeat" style="background-image: url('WhatsApp Image 2026-07-08 at 11.38.35.jpeg');">
+    
+   
+    <div class="absolute top-1/3 left-0 w-80 h-80 bg-forest/10 rounded-full filter blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-gold/5 rounded-full filter blur-[140px] pointer-events-none z-0"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-16 space-y-2">
+            <span class="text-emeraldMod font-bold text-xs uppercase tracking-widest block">
+                <i class="fa-solid fa-box-open text-gold animate-pulse mr-1"></i> Premium Unboxing Experience
+            </span>
+            <h2 class="font-poppins font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
+                Komponen Eksklusif <span class="bg-gradient-to-r from-emeraldMod to-gold bg-clip-text text-transparent">Di Dalam Box</span>
+            </h2>
+            <p class="text-neutral-300 font-light text-sm max-w-xl mx-auto leading-relaxed">
+                Setiap paket BirdsMotion Dome memuat seluruh instrumen premium yang dikelompokkan secara presisi untuk mempermudah perakitan Anda.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+           <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+               <div onmouseenter="gantiPreviewUnboxing('dome')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-amber-500 shadow-lg hover:border-amber-500 transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-dome">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500 text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-box text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-amber-400 transition-colors">Box Premium</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Wadah eksklusif hard-carton ramah lingkungan dan dengan desain yang menarik.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('kayu')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-amber-500 shadow-lg hover:border-amber-500 transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-kayu">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500 text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-puzzle-piece text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-amber-400 transition-colors">Laser-Cut Wood Puzzle</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Potongan anatomi tubuh burung presisi tinggi dari kayu.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('tatakan')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-amber-500 shadow-lg hover:border-amber-500 transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-tatakan">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500 text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-layer-group text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-amber-400 transition-colors">Tatakan Kayu Solid</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Pondasi dasar kokoh bermotif ornamen etnik nusantara.</p>
+                    </div>
+                </div>
+
+
+                <div onmouseenter="gantiPreviewUnboxing('dinamo')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-emeraldMod shadow-lg hover:border-emeraldMod transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-dinamo">
+                    <div class="w-10 h-10 rounded-lg bg-emeraldMod text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-microchip text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-emerald-400 transition-colors">Motor Dinamo Mikro</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Penggerak inti kepakan sayap ritmis 3V-6V DC bising rendah.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('baterai')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-emeraldMod shadow-lg hover:border-emeraldMod transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-baterai">
+                    <div class="w-10 h-10 rounded-lg bg-emeraldMod text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-battery-three-quarters text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-emerald-400 transition-colors">Baterai & Kabel</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Satu set power source AA beserta holder kabel tembaga murni.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('saklar')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-emeraldMod shadow-lg hover:border-emeraldMod transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-saklar">
+                    <div class="w-10 h-10 rounded-lg bg-emeraldMod text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-toggle-on text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-emerald-400 transition-colors">Saklar Konektor Toggle</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Switch ON/OFF responsif untuk kendali arus listrik kinetik.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('kawat')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-emeraldMod shadow-lg hover:border-emeraldMod transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-kawat">
+                    <div class="w-10 h-10 rounded-lg bg-emeraldMod text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-link text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-emerald-400 transition-colors">Kawat Penyangga Engsel</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Baja stainless fleksibel untuk mentransfer energi mekanik.</p>
+                    </div>
+                </div>
+
+
+                <div onmouseenter="gantiPreviewUnboxing('cat')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-sky-400 shadow-lg hover:border-sky-400 transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-cat">
+                    <div class="w-10 h-10 rounded-lg bg-sky-400 text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-sky-500 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-paint-brush text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-sky-300 transition-colors">Cat Akrilik & Kuas Set</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">5 pilihan warna primer pigmen pekat beserta 2 jenis kuas.</p>
+                    </div>
+                </div>
+
+                <div onmouseenter="gantiPreviewUnboxing('qrcodecard')" class="cursor-pointer bg-neutral-900 p-4 rounded-xl border border-neutral-800 border-l-4 border-l-gold shadow-lg hover:border-gold transition-all duration-300 group flex items-start gap-3.5" id="item-unbox-qrcodecard">
+                    <div class="w-10 h-10 rounded-lg bg-gold text-neutral-950 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-amber-500 transition-all">
+                        <i class="fa-solid fa-qrcode text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-poppins font-bold text-white text-[14px] tracking-wide group-hover:text-amber-400 transition-colors">Exclusive QR Access Card</h4>
+                        <p class="text-[12px] text-neutral-300 font-light mt-0.5 leading-snug">Kartu laminasi premium akses server ensiklopedia digital.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-5 w-full lg:sticky lg:top-28">
+                <div class="bg-gradient-to-br from-neutral-900 via-neutral-950 to-stone-900 text-white p-6 rounded-2xl shadow-2xl border border-neutral-800 flex flex-col justify-between min-h-[470px] relative overflow-hidden">
+                    
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-emeraldMod/30 m-3"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-gold/30 m-3"></div>
+                    
+                    <div class="space-y-4 relative z-10 w-full">
+                        <div class="w-full aspect-video rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 relative shadow-inner">
+                            <img id="img-unbox-preview" src="WhatsApp Image 2026-07-05 at 14.59.29.jpeg" alt="Unboxing Preview" class="w-full h-full object-cover transition-all duration-300">
+                            
+                            <div class="absolute top-3 left-3">
+                                <span id="badge-unbox-preview" class="bg-gradient-to-r from-amber-500 to-gold text-neutral-950 font-poppins font-bold text-[9px] px-2.5 py-1 rounded shadow-md uppercase tracking-wider">
+                                    Premium Packaging
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h3 id="judul-unbox-preview" class="font-poppins font-bold text-lg text-gold tracking-wide">Premium Eco-Thematic Box</h3>
+                            <p id="desc-unbox-preview" class="text-neutral-300 text-xs font-light leading-relaxed">
+                                Dimensi wadah penyimpanan utama berbahan hard-carton ramah lingkungan. Didesain eksklusif dengan ornamen etnik lokal khas nusantara, menjadikannya sangat bernilai estetika tinggi untuk dijadikan pajangan koleksi ruang tamu Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 mt-6 border-t border-neutral-800 relative z-10 grid grid-cols-2 gap-4 text-left">
+                        <div class="bg-neutral-900/60 p-2.5 rounded-lg border border-neutral-800">
+                            <span class="text-[9px] uppercase tracking-widest text-neutral-500 block font-medium">Standard Material</span>
+                            <span id="tech-material" class="text-xs font-semibold text-neutral-200 mt-0.5 block">Sustain Wood & Hard-Carton</span>
+                        </div>
+                        <div class="bg-neutral-900/60 p-2.5 rounded-lg border border-neutral-800">
+                            <span class="text-[9px] uppercase tracking-widest text-neutral-500 block font-medium">Sertifikasi Produk</span>
+                            <span id="tech-cert" class="text-xs font-semibold text-emeraldMod mt-0.5 block">100% Eco-Safe Grade A</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const dataUnboxing = {
+            dome: {
+                judul: "Box Premium",
+                deskripsi: "memiliki dua varian box premium, box DIY dan box standar.",
+                foto: "WhatsApp Image 2026-07-08 at 11.21.57.jpeg",
+                badge: "Pelindung Eksternal",
+                material: "Acrylic Clear 2mm",
+                sertifikasi: "Dust & Scratch Resistant"
+            },
+            dinamo: {
+                judul: "Modul Motor Dinamo Mikro",
+                deskripsi: "Dinamo listrik DC berdaya rendah (3V-6V) dengan teknologi putaran ultra-halus rendah kebisingan (*low-noise*). Komponen ini merupakan jantung mekanis utama yang menghasilkan simulasi kepakan sayap burung secara ritmis.",
+                foto: "WhatsApp Image 2026-07-08 at 11.23.54.jpeg",
+                badge: "Core Kinetic Engine",
+                material: "Copper Core DC Motor",
+                sertifikasi: "Low Noise Energy Saving"
+            },
+            kayu: {
+                judul: "Laser-Cut Wood Puzzle Sheets",
+                deskripsi: "Lembaran papan kayu berkualitas tinggi yang dipotong menggunakan mesin laser presisi industri komputerisasi. Memastikan setiap lekuk sendi, engsel, dan kepingan anatomi tubuh burung terlepas rapi serta pas saat disatukan.",
+                foto: "WhatsApp Image 2026-07-05 at 16.27.32.jpeg",
+                badge: "Komponen Kriya",
+                material: "Premium Ply-Wood 3mm",
+                sertifikasi: "Laser Precision 0.1mm"
+            },
+            tatakan: {
+                judul: "Tatakan Kayu Solid Base",
+                deskripsi: "Pondasi sasis bawah lingkaran berbobot ideal sebagai jangkar penyeimbang seluruh modul. Dilengkapi ukiran grafir khusus berpola batik etnik nusantara yang mempertegas integrasi nilai budaya lokal Indonesia.",
+                foto: "WhatsApp Image 2026-07-08 at 11.19.18.jpeg",
+                badge: "Sasis Pondasi Utama",
+                material: "Mahogany / Albasia Wood",
+                sertifikasi: "Legal Wood Certified"
+            },
+            baterai: {
+                judul: "Battery Pack & Wiring Kit",
+                deskripsi: "Wadah penampung daya baterai tipe AA ganda yang dilengkapi saklar pengaman internal terisolasi, serta jalinan kabel tembaga murni untuk menghantarkan energi listrik secara stabil tanpa risiko korsleting.",
+                foto: "WhatsApp Image 2026-07-08 at 11.19.29.jpeg",
+                badge: "Sistem Kelistrikan",
+                material: "Dual AA Holder & Copper Wire",
+                sertifikasi: "Safe Voltage Circuit"
+            },
+            saklar: {
+                judul: "Saklar Toggle Konektor",
+                deskripsi: "Komponen pemutus dan penyambung arus listrik fisik berdesain kokoh. Memberikan pengalaman interaksi taktil yang memuaskan bagi pengguna saat ingin mengaktifkan mode simulasi gerak mekanis secara instan.",
+                foto: "WhatsApp Image 2026-07-05 at 17.22.18.jpeg",
+                badge: "User Interface Hardware",
+                material: "Sub-Miniature Toggle Switch",
+                sertifikasi: "Tested 10.000+ Clicks"
+            },
+            kawat: {
+                judul: "Kawat Penyangga Engsel Linier",
+                deskripsi: "Batang penghubung logam fleksibel dengan tingkat kelenturan elastis tinggi yang dirancang khusus untuk mengubah rotasi dinamo sirkular menjadi gerak naik-turun linier pada engsel sayap burung replika.",
+                foto: "WhatsApp Image 2026-07-08 at 11.19.24.jpeg",
+                badge: "Komponen Kinematika",
+                material: "Stainless Steel Wire",
+                sertifikasi: "Anti-Rust Treatment"
+            },
+            cat: {
+                judul: "Set Cat Akrilik & Dual Brush",
+                deskripsi: "Kombinasi 5 tube warna akrilik berbasis air (*water-based*) berpigmen tinggi yang cepat kering dan tahan pudar, dipadukan dengan kuas berujung lancip serta flat untuk melukis gradasi detail bulu secara detail.",
+                foto: "WhatsApp Image 2026-07-05 at 16.05.54.jpeg",
+                badge: "Seni Media Pewarnaan",
+                material: "Non-Toxic Acrylic Paint",
+                sertifikasi: "EN71 Child-Safe Approved"
+            },
+            qrcodecard: {
+                judul: "Exclusive QR Access Card",
+                badge: "Gerbang Cloud Digital",
+                deskripsi: "Kartu fisik otentikasi resmi cetakan premium tahan air. Cukup pindai kode QR unik pada kartu ini menggunakan smartphone untuk langsung dialihkan menuju dashboard ensiklopedia ilmiah cerdas ornitologi satwa.",
+                foto: "WhatsApp Image 2026-07-05 at 18.57.25.jpeg",
+                material: "Art Carton 310gr Matte-Laminated",
+                sertifikasi: "Encrypted Cloud Direct Link"
+            }
+        };
+
+        function gantiPreviewUnboxing(key) {
+            const item = dataUnboxing[key];
+            if (!item) return;
+
+            const foto = document.getElementById('img-unbox-preview');
+            const badge = document.getElementById('badge-unbox-preview');
+            const judul = document.getElementById('judul-unbox-preview');
+            const desc = document.getElementById('desc-unbox-preview');
+            const techMat = document.getElementById('tech-material');
+            const techCert = document.getElementById('tech-cert');
+
+            foto.style.opacity = '0.3';
+            setTimeout(() => {
+                foto.src = item.foto;
+                badge.innerText = item.badge;
+                judul.innerText = item.judul;
+                desc.innerText = item.deskripsi;
+                techMat.innerText = item.material;
+                techCert.innerText = item.sertifikasi;
+                foto.style.opacity = '1';
+            }, 100);
+
+            // Daftar element ID penanda kategori
+            const borderColors = {
+                dome: 'border-amber-600', kayu: 'border-amber-600', tatakan: 'border-amber-600',
+                dinamo: 'border-emeraldMod', baterai: 'border-emeraldMod', saklar: 'border-emeraldMod', kawat: 'border-emeraldMod',
+                cat: 'border-blue-600', qrcodecard: 'border-amber-500'
+            };
+
+            Object.keys(borderColors).forEach(k => {
+                const element = document.getElementById(`item-unbox-${k}`);
+                const colorClass = borderColors[k];
+                if (k === key) {
+                    element.classList.add(colorClass, 'scale-[1.02]');
+                } else {
+                    element.classList.remove(colorClass, 'scale-[1.02]');
+                }
+            });
+        }
+    </script>
+  </section>
+   <section id="koleksi" class="py-28 px-6 bg-[#09110b] text-neutral-200 relative overflow-hidden border-t border-white/5">
+        
+        <div class="absolute -top-40 right-10 w-[500px] h-[500px] bg-emeraldMod/5 rounded-full filter blur-[140px] pointer-events-none"></div>
+        <div class="absolute -bottom-40 left-10 w-[400px] h-[400px] bg-gold/5 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+                <div class="space-y-3 max-w-2xl">
+                    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emeraldMod/10 text-emerald-400 text-xs font-semibold uppercase tracking-widest border border-emeraldMod/20">
+                        <i class="fa-solid fa-layer-group animate-pulse"></i> Masterpiece Collectibles
+                    </span>
+                    <h2 class="font-poppins font-extrabold text-3xl sm:text-5xl tracking-tight text-white">
+                        Eksplorasi <span class="bg-gradient-to-r from-emerald-400 to-gold bg-clip-text text-transparent">Seri Burung Endemik</span>
+                    </h2>
+                    <p class="text-neutral-400 font-light text-sm sm:text-base leading-relaxed">
+                        Koleksi kriya kinetik premium yang merepresentasikan kekayaan ornitologi nusantara. Didesain presisi untuk estetika dekorasi tinggi dan kenyamanan edukasi interaktif.
+                    </p>
+                </div>
+                
+                <div class="flex items-center gap-3 bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 self-start md:self-end">
+                    <div class="w-2 h-2 rounded-full bg-emeraldMod animate-ping"></div>
+                    <span class="text-xs font-medium text-neutral-300">Database Cloud: 6 Seri Terdaftar</span>
+                </div>
+            </div>
+
+            <div class="flex gap-6 overflow-x-auto pb-8 pt-2 snap-x no-scrollbar scroll-smooth">
+                
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-900/40 backdrop-blur-md p-6 rounded-2xl snap-start border border-neutral-800/80 flex flex-col justify-between group hover:border-emeraldMod/40 hover:bg-neutral-900/80 hover:-translate-y-1.5 transition-all duration-300 shadow-xl">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 relative shadow-inner flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent z-10"></div>
+                            <img src="WhatsApp Image 2026-07-05 at 20.57.34.jpeg" alt="Cendet Madura" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-3 left-3 z-20 bg-emeraldMod text-neutral-950 font-bold text-[9px] px-2.5 py-1 rounded-md uppercase tracking-wide">
+                                Ready Stock
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-gold tracking-widest uppercase">Series 01</span>
+                            <h3 class="font-poppins font-bold text-xl text-white mt-0.5 group-hover:text-emerald-400 transition-colors">Cendet Madura</h3>
+                            <p class="text-xs text-neutral-400 italic">Lanius schach longicaudatus</p>
+                        </div>
+                        <p class="text-xs text-neutral-300 font-light leading-relaxed">
+                            Burung petarung legendaris Madura berciri khas topeng hitam (*blangkon*) dengan ritme kepakan taktis.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-800/60 flex items-center justify-between">
+                        <span class="text-[10px] font-semibold tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-md">IUCN: Decreasing</span>
+                        <a href="#qrcode" class="text-xs font-bold text-emerald-400 group-hover:text-white flex items-center gap-1 transition-colors">
+                            Buka Data <i class="fa-solid fa-chevron-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-900/40 backdrop-blur-md p-6 rounded-2xl snap-start border border-neutral-800/80 flex flex-col justify-between group hover:border-emeraldMod/40 hover:bg-neutral-900/80 hover:-translate-y-1.5 transition-all duration-300 shadow-xl">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 relative shadow-inner flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent z-10"></div>
+                            <img src="WhatsApp Image 2026-07-08 at 12.38.11.jpeg" alt="Rangkong Badak" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-3 left-3 z-20 bg-emeraldMod text-neutral-950 font-bold text-[9px] px-2.5 py-1 rounded-md uppercase tracking-wide">
+                                New Model
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-gold tracking-widest uppercase">Series 02</span>
+                            <h3 class="font-poppins font-bold text-xl text-white mt-0.5 group-hover:text-emerald-400 transition-colors">Rangkong Badak</h3>
+                            <p class="text-xs text-neutral-400 italic">Buceros rhinoceros</p>
+                        </div>
+                        <p class="text-xs text-neutral-300 font-light leading-relaxed">
+                            Simbol kesetiaan rimba Kalimantan dengan visual cula silinder melengkung merah-oranye yang megah.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-800/60 flex items-center justify-between">
+                        <span class="text-[10px] font-semibold tracking-wider text-red-400 bg-red-400/10 px-2.5 py-1 rounded-md">IUCN: Vulnerable</span>
+                        <span class="text-xs font-medium text-emerald-400">Tersedia Terbatas</span>
+                    </div>
+                </div>
+
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-900/40 backdrop-blur-md p-6 rounded-2xl snap-start border border-neutral-800/80 flex flex-col justify-between group hover:border-emeraldMod/40 hover:bg-neutral-900/80 hover:-translate-y-1.5 transition-all duration-300 shadow-xl">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 relative shadow-inner flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent z-10"></div>
+                            <img src="WhatsApp Image 2026-07-08 at 12.45.31.jpeg" alt="Kuau Raja" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-3 left-3 z-20 bg-emeraldMod text-neutral-950 font-bold text-[9px] px-2.5 py-1 rounded-md uppercase tracking-wide">
+                                New Model
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-gold tracking-widest uppercase">Series 03</span>
+                            <h3 class="font-poppins font-bold text-xl text-white mt-0.5 group-hover:text-emerald-400 transition-colors">Kuau Raja</h3>
+                            <p class="text-xs text-neutral-400 italic">Argusianus argus</p>
+                        </div>
+                        <p class="text-xs text-neutral-300 font-light leading-relaxed">
+                            Raja lantai hutan Sumatra dengan bentangan ekor megah bertabur motif rasi bintang malam mikro.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-800/60 flex items-center justify-between">
+                        <span class="text-[10px] font-semibold tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-md">IUCN: Near Threatened</span>
+                        <span class="text-xs font-medium text-emerald-400">Tersedia Terbatas</span>
+                    </div>
+                </div>
+
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-900/40 backdrop-blur-md p-6 rounded-2xl snap-start border border-neutral-800/80 flex flex-col justify-between group hover:border-emeraldMod/40 hover:bg-neutral-900/80 hover:-translate-y-1.5 transition-all duration-300 shadow-xl">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 relative shadow-inner flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent z-10"></div>
+                            <img src="WhatsApp Image 2026-07-08 at 12.46.00.jpeg" alt="Burung Maleo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-3 left-3 z-20 bg-emeraldMod text-neutral-950 font-bold text-[9px] px-2.5 py-1 rounded-md uppercase tracking-wide">
+                                New Model
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-gold tracking-widest uppercase">Series 04</span>
+                            <h3 class="font-poppins font-bold text-xl text-white mt-0.5 group-hover:text-emerald-400 transition-colors">Burung Maleo</h3>
+                            <p class="text-xs text-neutral-400 italic">Macrocephalon maleo</p>
+                        </div>
+                        <p class="text-xs text-neutral-300 font-light leading-relaxed">
+                            Satwa endemik Wallacea unik dengan tonjolan kepala penjaga sensor suhu inkubasi geotermal alami.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-800/60 flex items-center justify-between">
+                        <span class="text-[10px] font-semibold tracking-wider text-red-500 bg-red-500/10 px-2.5 py-1 rounded-md">IUCN: Endangered</span>
+                        <span class="text-xs font-medium text-emerald-400">Tersedia Terbatas</span>
+                    </div>
+                </div>
+
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-950/50 p-6 rounded-2xl snap-start border border-neutral-900 flex flex-col justify-between opacity-45 relative group">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl bg-neutral-900 border border-neutral-800/60 flex items-center justify-center text-3xl text-neutral-600">
+                            <i class="fa-solid fa-lock animate-pulse"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-neutral-600 tracking-widest uppercase">Series 05</span>
+                            <h3 class="font-poppins font-bold text-xl text-neutral-500 mt-0.5">Cendrawasih</h3>
+                            <p class="text-xs text-neutral-600 italic">Paradisaeidae</p>
+                        </div>
+                        <p class="text-xs text-neutral-500 font-light leading-relaxed">
+                            Sang Burung Surga (*Bird of Paradise*) berbulu kawat hias luar biasa elok pengisi belantara Papua.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-900 flex items-center justify-between">
+                        <span class="bg-neutral-900 text-neutral-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Locked Section</span>
+                    </div>
+                </div>
+
+                <div class="min-w-[300px] sm:min-w-[340px] bg-neutral-950/50 p-6 rounded-2xl snap-start border border-neutral-900 flex flex-col justify-between opacity-45 relative group">
+                    <div class="space-y-4">
+                        <div class="h-44 rounded-xl bg-neutral-900 border border-neutral-800/60 flex items-center justify-center text-3xl text-neutral-600">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-neutral-600 tracking-widest uppercase">Series 06</span>
+                            <h3 class="font-poppins font-bold text-xl text-neutral-500 mt-0.5">Tengkek Buto</h3>
+                            <p class="text-xs text-neutral-600 italic">Eurystomus orientalis</p>
+                        </div>
+                        <p class="text-xs text-neutral-500 font-light leading-relaxed">
+                            Burung masteran master-flight berparuh merah jingga dengan manuver kepakan sayap sirkular tangguh.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-neutral-900 flex items-center justify-between">
+                        <span class="bg-neutral-900 text-neutral-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Locked Section</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+  <section id="cara-kerja" class="py-24 bg-no-repeat" style="background-image: url('WhatsApp Image 2026-07-08 at 14.14.03.jpeg')>
+    <div class="absolute inset-0 bg-[radial-gradient(#1E4620_1px,transparent_1px)] [background-size:16px_16px] opacity-5"></div>
+    
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-emeraldMod font-semibold text-sm tracking-wider uppercase bg-emeraldMod/10 px-4 py-1.5 rounded-full inline-block mb-3">Sistem Produksi & Edukasi</span>
+            <h2 class="font-poppins font-bold text-3xl md:text-4xl text-forest mb-4">Bagaimana BirdsMotion Bekerja?</h2>
+            <p class="text-slate-600 font-inter text-sm md:text-base">Dari proses perakitan fisik menggunakan lem khusus, sentuhan kreativitas pewarnaan kriya, hingga integrasi ekosistem digital awan yang cerdas.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <div id="card-kinetic" onclick="gantiCaraKerja('kinetic')" class="cursor-pointer bg-white p-6 rounded-2xl border-2 border-forest shadow-md transition-all duration-300 group hover:-translate-y-1 fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-forest text-white text-xl">
+                            <i class="fa-solid fa-hammer"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-forest transition-colors">Perakitan & Lem</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Penyusunan komponen mekanik presisi tinggi menggunakan teknik pengeleman khusus.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-manual" onclick="gantiCaraKerja('manual')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-emeraldMod/10 text-emeraldMod text-xl">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-emeraldMod transition-colors">Panduan Mandiri</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Bimbingan interaktif langkah demi langkah untuk merakit komponen kriya secara mandiri.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-coloring" onclick="gantiCaraKerja('coloring')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-skyMod/10 text-skyMod text-xl">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-skyMod transition-colors">Pewarnaan & Seni</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Ekspresikan kreativitas dengan mewarnai corak bulu burung dan menghias detail estetika.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-qrcode" onclick="gantiCaraKerja('qrcode')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-emeraldMod/10 text-emeraldMod text-xl">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-emeraldMod transition-colors">Aktivasi QR Code</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Hubungkan hasil karya fisik Anda secara langsung ke dalam ekosistem digital awan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-puzzle" onclick="gantiCaraKerja('puzzle')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-forest/10 text-forest text-xl">
+                            <i class="fa-solid fa-puzzle-piece"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-forest transition-colors">Simulasi Puzzle</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Edukasi digital interaktif menyusun ulang anatomi tubuh burung secara virtual.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-packaging" onclick="gantiCaraKerja('packaging')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card">
+                    <div class="flex items-start gap-4">
+                        <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-amber-500/10 text-amber-600 text-xl">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-semibold text-lg text-slate-800 mb-1 group-hover:text-amber-600 transition-colors">Eco Packaging</h3>
+                            <p class="text-slate-500 text-sm font-inter line-clamp-2">Seluruh material aman terlindungi dalam kemasan ramah lingkungan berkelanjutan.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-5 lg:sticky lg:top-28">
+                <div class="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 overflow-hidden relative">
+                    <div class="relative h-64 md:h-72 rounded-2xl overflow-hidden mb-6 bg-slate-100">
+                        <img id="display-cara-gambar" src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=800" alt="Detail Alur" class="w-full h-full object-cover transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-40"></div>
+                    </div>
+                    <div class="px-2">
+                        <h4 id="display-cara-judul" class="font-poppins font-bold text-2xl text-forest mb-3">Perakitan Mekanik & Lem</h4>
+                        <p id="display-cara-deskripsi" class="text-slate-600 font-inter leading-relaxed text-sm md:text-base">Proses merakit komponen mekanik burung kayu dengan presisi tinggi menggunakan teknik pengeleman khusus. Tahap ini memastikan seluruh struktur robotik kokoh, stabil, dan siap bergerak secara kinetik dengan mulus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA DATA STRUKTUR CARA KERJA (UPDATED PRODUCTION)
+        const dataCaraKerja = {
+            kinetic: {
+                judul: "Perakitan Mekanik & Lem",
+                deskripsi: "Proses merakit komponen mekanik burung kayu dengan presisi tinggi menggunakan teknik pengeleman khusus. Tahap ini memastikan seluruh struktur robotik kokoh, stabil, dan siap bergerak secara kinetik dengan mulus.",
+                gambar: "WhatsApp Image 2026-07-08 at 13.25.48.jpeg",
+                warna: "forest"
+            },
+            manual: {
+                judul: "Panduan & Perakitan Mandiri",
+                deskripsi: "Setiap kit dilengkapi dengan panduan interaktif yang detail. Pengguna dibimbing langkah demi langkah untuk menyusun komponen kayu, mengaplikasikan lem perekat secara aman, hingga memahami fungsi setiap roda gigi.",
+                gambar: "WhatsApp Image 2026-07-08 at 13.29.49.jpeg",
+                warna: "emeraldMod"
+            },
+            coloring: {
+                judul: "Pewarnaan & Menghias",
+                deskripsi: "Tahap kreatif di mana pengguna dapat mengekspresikan imajinasinya secara penuh. Menggunakan cat pilihan ramah lingkungan untuk mewarnai bulu dan corak burung, serta menghias detail estetika agar setiap karya tampil unik, hidup, dan berjiwa seni tinggi",
+                gambar: "pewarnaan.jpeg",
+                warna: "skyMod"
+            },
+            qrcode: {
+                judul: "Aktivasi Fitur QR Code",
+                deskripsi: "Setelah burung selesai dirakit, dilem, dan dihias, pindai QR Code unik yang tertera pada produk untuk menghubungkannya secara instan dengan platform digital cerdas BirdsMotion Dome.",
+                gambar: "WhatsApp Image 2026-07-05 at 18.57.25.jpeg",
+                warna: "emeraldMod"
+            },
+            puzzle: {
+                judul: "Simulasi Puzzle Interaktif",
+                deskripsi: "Rasakan pengalaman digital edukatif yang mendalam melalui aplikasi. Menyusun kembali bagian anatomi tubuh burung secara virtual untuk mengasah pemahaman motorik spasial serta pengetahuan ornitologi secara komprehensif.",
+                gambar: "WhatsApp Image 2026-07-08 at 13.27.48.jpeg",
+                warna: "forest"
+            },
+            packaging: {
+                judul: "Eco-Friendly Packaging",
+                deskripsi: "Seluruh kelengkapan komponen, mulai dari lem perekat non-toxic, set cat pewarna kriya, hingga potongan panel kayu presisi, dikemas rapi menggunakan material berkelanjutan yang aman bagi lingkungan.",
+                gambar: "WhatsApp Image 2026-07-08 at 11.21.57.jpeg",
+                warna: "amber-500"
+            }
+        };
+
+        // FUNGSI INTERAKTIF PERGANTIAN KARTU (SMOOTH & ANTI BUG)
+        function gantiCaraKerja(key) {
+            const item = dataCaraKerja[key];
+            if(!item) return;
+
+            // 1. Perbarui Elemen Sisi Kanan (Display) dengan transisi mulus
+            const imgCara = document.getElementById('display-cara-gambar');
+            const judulCara = document.getElementById('display-cara-judul');
+            const deskripsiCara = document.getElementById('display-cara-deskripsi');
+
+            if(imgCara && judulCara && deskripsiCara) {
+                imgCara.style.opacity = '0';
+                setTimeout(() => {
+                    imgCara.src = item.gambar;
+                    judulCara.innerText = item.judul;
+                    deskripsiCara.innerText = item.deskripsi;
+                    imgCara.style.opacity = '1';
+                }, 200);
+            }
+
+            // 2. Reset Gaya Seluruh Kartu ke Keadaan Normal
+            const cards = document.querySelectorAll('.fitur-card');
+            cards.forEach(card => {
+                card.className = "cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card";
+                const iconBox = card.querySelector('.icon-box');
+                if(iconBox) {
+                    iconBox.className = iconBox.className.replace(/bg-(forest|emeraldMod|skyMod|amber-500) text-white/g, '');
+                    if(card.id === 'card-kinetic' || card.id === 'card-puzzle') iconBox.classList.add('bg-forest/10', 'text-forest');
+                    if(card.id === 'card-manual' || card.id === 'card-qrcode') iconBox.classList.add('bg-emeraldMod/10', 'text-emeraldMod');
+                    if(card.id === 'card-coloring') iconBox.classList.add('bg-skyMod/10', 'text-skyMod');
+                    if(card.id === 'card-packaging') iconBox.classList.add('bg-amber-500/10', 'text-amber-600');
+                }
+            });
+
+            // 3. Highlight Kartu yang Sedang Aktif saat ini
+            const kartuAktif = document.getElementById('card-' + key);
+            if(kartuAktif) {
+                kartuAktif.className = `cursor-pointer bg-white p-6 rounded-2xl border-2 border-${item.warna} shadow-md transition-all duration-300 group hover:-translate-y-1 fitur-card`;
+                
+                const activeIconBox = kartuAktif.querySelector('.icon-box');
+                if(activeIconBox) {
+                    // Bersihkan pewarnaan redup (transparan)
+                    activeIconBox.classList.remove('bg-forest/10', 'text-forest', 'bg-emeraldMod/10', 'text-emeraldMod', 'bg-skyMod/10', 'text-skyMod', 'bg-amber-500/10', 'text-amber-600');
+                    // Berikan background solid aktif
+                    activeIconBox.classList.add(`bg-${item.warna}`, 'text-white');
+                }
+            }
+        }
+    </script>
+</section>
+<footer class="bg-forest text-white/90 relative overflow-hidden pt-20 pb-10 border-t-4 border-emeraldMod">
+    <div class="absolute inset-0 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-emeraldMod/10 rounded-full filter blur-3xl"></div>
+
+    <div class="container mx-auto px-6 max-w-6xl relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+            
+            <div class="md:col-span-5 space-y-6">
+                <a href="#" class="flex items-center gap-3 focus:outline-none">
+                    <div class="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center text-white shadow-inner">
+                        <i class="fa-solid fa-dove text-xl text-emeraldMod"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-poppins font-bold text-2xl tracking-tight text-white">BirdsMotion</span>
+                        <span class="text-[11px] uppercase tracking-widest font-semibold text-emeraldMod -mt-1">Dome Ecosystem</span>
+                    </div>
+                </a>
+                <p class="text-white/70 font-inter text-sm leading-relaxed max-w-md">
+                    Inovasi kriya edukasi masa kini yang menggabungkan keindahan burung endemik Indonesia berbasis mekanik kinetik kayu dengan kecerdasan simulasi digital interaktif.
+                </p>
+                <div class="flex items-center gap-3 pt-2">
+                    <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-emeraldMod hover:text-white hover:border-emeraldMod hover:-translate-y-1 transition-all duration-300" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-base"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-emeraldMod hover:text-white hover:border-emeraldMod hover:-translate-y-1 transition-all duration-300" aria-label="YouTube">
+                        <i class="fa-brands fa-youtube text-base"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-emeraldMod hover:text-white hover:border-emeraldMod hover:-translate-y-1 transition-all duration-300" aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok text-base"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-emeraldMod hover:text-white hover:border-emeraldMod hover:-translate-y-1 transition-all duration-300" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-base"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="md:col-span-3 space-y-5">
+                <h4 class="font-poppins font-bold text-base uppercase tracking-wider text-emeraldMod">Navigasi</h4>
+                <ul class="space-y-3 font-inter text-sm text-white/70">
+                    <li><a href="#fitur" class="hover:text-white hover:translate-x-1 inline-block transition-all">Fitur Utama</a></li>
+                    <li><a href="#cara-kerja" class="hover:text-white hover:translate-x-1 inline-block transition-all">Cara Kerja Alur</a></li>
+                    <li><a href="#edukasi" class="hover:text-white hover:translate-x-1 inline-block transition-all">Materi Edukasi</a></li>
+                    <li><a href="#kontak" class="hover:text-white hover:translate-x-1 inline-block transition-all">Hubungi Kami</a></li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-4 space-y-5">
+                <h4 class="font-poppins font-bold text-base uppercase tracking-wider text-emeraldMod">Hubungi Kami</h4>
+                <ul class="space-y-4 font-inter text-sm text-white/70">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot mt-1 text-emeraldMod flex-shrink-0"></i>
+                        <span>Bangkalan, Madura, Jawa Timur, Indonesia (Ecosystem Base Hub)</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-envelope text-emeraldMod flex-shrink-0"></i>
+                        <a href="mailto:info@birdsmotion.com" class="hover:text-white transition-colors">info@birdsmotion.com</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone text-emeraldMod flex-shrink-0"></i>
+                        <a href="https://wa.me/#" class="hover:text-white transition-colors">+62 812-3363-2020</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-inter text-xs text-white/50">
+            <p>&copy; 2026 BirdsMotion Dome. Seluruh Hak Cipta Dilindungi.</p>
+            <div class="flex items-center gap-6">
+                <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        const dataFitur = {
+            kinetic: {
+                judul: "Gerak Otomatis Kinetic",
+                badge: "Mekanika Kinetik",
+                deskripsi: "Digerakkan oleh modul motor dinamo listrik mikro responsif untuk mensimulasikan gerak kepakan sayap burung secara konsisten dan ritmis demi hasil visualisasi satwa yang tampak hidup nyata.",
+                foto: "WhatsApp Image 2026-07-05 at 14.59.29.jpeg",
+                warna: "forest"
+            },
+            manual: {
+                judul: "Gerak Tuas Manual",
+                badge: "Prinsip Engsel",
+                deskripsi: "Dilengkapi dengan kendali tuas mekanis interaktif untuk mempelajari prinsip dasar kinematika engsel secara langsung, memberikan pengalaman belajar fisika terapan yang seru bagi anak-anak.",
+                foto: "WhatsApp Image 2026-07-05 at 14.27.33.jpeg",
+                warna: "emeraldMod"
+            },
+            coloring: {
+                judul: "DIY Coloring (Kriya)",
+                badge: "Seni Lukis & Kriya",
+                deskripsi: "Ekspresikan nilai estetika seni dengan melukis langsung corak bulu pada potongan kayu anatomi burung (sayap, badan, ekor) menggunakan set palet cat akrilik dan kuas yang telah disediakan.",
+                foto: "WhatsApp Image 2026-07-05 at 16.05.54.jpeg",
+                warna: "skyMod"
+            },
+            puzzle: {
+                judul: "DIY Puzzle Assembly",
+                badge: "Struktur Spasial",
+                deskripsi: "Asah kemampuan konstruksi spasial dengan merakit potongan kayu presisi hasil pemotongan laser (laser-cut) menjadi utuh sempurna sesuai skema cetak rancangan instruksi.",
+                foto: "WhatsApp Image 2026-07-05 at 14.27.33.jpeg",
+                warna: "forest"
+            },
+            packaging: {
+                judul: "Premium Box Packaging",
+                badge: "Desain Premium",
+                deskripsi: "Dimensi kotak tematik ramah lingkungan bermotif etnik nusantara, bernilai estetika tinggi, kokoh, dan sangat ideal dijadikan sebagai sarana pajangan eksklusif maupun hadiah.",
+                foto: "WhatsApp Image 2026-07-05 at 14.59.29.jpeg",
+                warna: "amber-500"
+            },
+            qrcode: {
+                judul: "QR Smart Encyclopedia",
+                badge: "Integrasi Digital",
+                deskripsi: "Akses instan sekali ketuk menuju platform ensiklopedia ilmiah berbasis komputasi awan untuk pendalaman data ornitologi, habitat asli, suara kicauan, hingga status konservasi.",
+                foto: "WhatsApp Image 2026-07-05 at 14.59.29.jpeg",
+                warna: "emeraldMod"
+            }
+        };
+
+        function gantiPreview(key) {
+            const item = dataFitur[key];
+            if(!item) return;
+
+            const fotoElement = document.getElementById('preview-foto');
+            const badgeElement = document.getElementById('preview-badge');
+            const judulElement = document.getElementById('preview-judul');
+            const deskripsiElement = document.getElementById('preview-deskripsi');
+
+            fotoElement.style.opacity = '0.3';
+            fotoElement.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                fotoElement.src = item.foto;
+                badgeElement.innerText = item.badge;
+                judulElement.innerText = item.judul;
+                deskripsiElement.innerText = item.deskripsi;
+
+                badgeElement.className = `absolute top-4 right-4 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md bg-${item.warna}`;
+
+                fotoElement.style.opacity = '1';
+                fotoElement.style.transform = 'scale(100%)';
+            }, 150);
+
+            document.querySelectorAll('.fitur-card').forEach(card => {
+                card.className = "cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg fitur-card";
+                const iconBox = card.querySelector('.icon-box');
+                if(iconBox) {
+                    iconBox.className = iconBox.className.replace(/bg-(forest|emeraldMod|skyMod|amber-500) text-white/g, '');
+                    if(card.id === 'card-kinetic' || card.id === 'card-puzzle') iconBox.classList.add('bg-forest/10', 'text-forest');
+                    if(card.id === 'card-manual' || card.id === 'card-qrcode') iconBox.classList.add('bg-emeraldMod/10', 'text-emeraldMod');
+                    if(card.id === 'card-coloring') iconBox.classList.add('bg-skyMod/10', 'text-skyMod');
+                    if(card.id === 'card-packaging') iconBox.classList.add('bg-amber-500/10', 'text-amber-600');
+                }
+            });
+
+            const kartuAktif = document.getElementById('card-' + key);
+            kartuAktif.className = `cursor-pointer bg-white p-6 rounded-2xl border-2 border-${item.warna} shadow-md transition-all duration-300 group hover:-translate-y-1 fitur-card`;
+            
+            const activeIconBox = kartuAktif.querySelector('.icon-box');
+            if(activeIconBox) {
+                activeIconBox.className = `w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 shadow-sm icon-box bg-${item.warna} text-white`;
+            }
+        }
+    </script>
+</body>
+</html>
